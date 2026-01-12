@@ -37,3 +37,14 @@ class CustomLoginView(LoginView):
         elif user.role == 'teacher':
             return reverse_lazy('teacher_dashboard')
         return reverse_lazy('login')
+
+
+from django.http import HttpResponseForbidden
+
+@login_required
+def teacher_dashboard(request):
+    if request.user.role != 'teacher':
+        return HttpResponseForbidden("Teachers only")
+
+    # You can later pass exams, students, etc. here
+    return render(request, 'accounts/teacher_dashboard.html')
